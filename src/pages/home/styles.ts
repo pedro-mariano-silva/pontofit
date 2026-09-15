@@ -15,21 +15,21 @@ export const style =
 
     topo: {
       top: -150,
-      width: 395,
-      height: 365,
+      width: 455,
+      height: 385,
     },
 
     text: {
       padding: 20,
-      fontSize: 30,
-      top: -299,
+      fontSize: 40,
+      top: -320,
       color: "white",
       fontFamily: "Baloo-Bhaina",
       fontWeight: "bold",
     },
 
     exercise: {
-      top: -275,
+      top: -265,
       width: 170,
       height: 120,
       right: -238,
@@ -44,7 +44,7 @@ export const style =
       justifyContent: "space-around",
       alignItems: "flex-start",
 
-      marginTop: -235,
+      marginTop: -195,
 
       paddingHorizontal: 20,
     },

@@ -13,6 +13,10 @@ import {
 } from "react-native";
 
 import {
+  Ionicons,
+} from "@expo/vector-icons";
+
+import {
   useNavigation,
 } from "@react-navigation/native";
 
@@ -61,6 +65,11 @@ export default function CadastrarAluno() {
     senha,
     setSenha,
   ] = useState("");
+
+  const [
+    mostrarSenha,
+    setMostrarSenha,
+  ] = useState(false);
 
   const [
     loading,
@@ -279,6 +288,8 @@ export default function CadastrarAluno() {
           false
         }
       >
+        {/* VOLTAR */}
+
         <TouchableOpacity
           style={
             style.backButton
@@ -300,6 +311,8 @@ export default function CadastrarAluno() {
           </Text>
         </TouchableOpacity>
 
+        {/* TÍTULO */}
+
         <Text
           style={
             style.title
@@ -315,6 +328,8 @@ export default function CadastrarAluno() {
         >
           Crie o acesso de um novo aluno.
         </Text>
+
+        {/* NOME */}
 
         <Text
           style={
@@ -340,6 +355,8 @@ export default function CadastrarAluno() {
             !loading
           }
         />
+
+        {/* E-MAIL */}
 
         <Text
           style={
@@ -370,6 +387,8 @@ export default function CadastrarAluno() {
           }
         />
 
+        {/* TELEFONE */}
+
         <Text
           style={
             style.label
@@ -395,6 +414,8 @@ export default function CadastrarAluno() {
           }
         />
 
+        {/* SENHA */}
+
         <Text
           style={
             style.label
@@ -403,27 +424,79 @@ export default function CadastrarAluno() {
           SENHA INICIAL
         </Text>
 
-        <TextInput
-          style={
-            style.input
-          }
-          placeholder="Senha inicial"
-          secureTextEntry
-          value={
-            senha
-          }
-          onChangeText={
-            setSenha
-          }
-          autoCapitalize="none"
-          autoCorrect={
-            false
-          }
-          editable={
-            !loading
-          }
-          returnKeyType="done"
-        />
+        <View
+          style={[
+            style.input,
+            {
+              flexDirection:
+                "row",
+
+              alignItems:
+                "center",
+
+              paddingRight: 4,
+            },
+          ]}
+        >
+          <TextInput
+            style={{
+              flex: 1,
+              fontSize: 16,
+            }}
+            placeholder="Senha inicial"
+            placeholderTextColor="#999"
+            secureTextEntry={
+              !mostrarSenha
+            }
+            value={
+              senha
+            }
+            onChangeText={
+              setSenha
+            }
+            autoCapitalize="none"
+            autoCorrect={
+              false
+            }
+            editable={
+              !loading
+            }
+            returnKeyType="done"
+          />
+
+          <TouchableOpacity
+            onPress={
+              () =>
+                setMostrarSenha(
+                  (
+                    valorAtual
+                  ) =>
+                    !valorAtual
+                )
+            }
+            style={{
+              paddingHorizontal: 10,
+              paddingVertical: 8,
+            }}
+            disabled={
+              loading
+            }
+          >
+            <Ionicons
+              name={
+                mostrarSenha
+                  ? "eye-outline"
+                  : "eye-off-outline"
+              }
+              size={
+                22
+              }
+              color="#555"
+            />
+          </TouchableOpacity>
+        </View>
+
+        {/* BOTÃO */}
 
         <TouchableOpacity
           style={

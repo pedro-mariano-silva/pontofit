@@ -19,9 +19,9 @@ export const style =
     // ========================================
 
     topo: {
-      top: -150,
-      width: 395,
-      height: 365,
+         top: -150,
+      width: 455,
+      height: 385,
     },
 
     text: {
@@ -45,7 +45,7 @@ export const style =
         "center",
       alignItems: "center",
 
-      top: -185,
+      top: -120,
 
       paddingHorizontal: 20,
 
@@ -53,7 +53,7 @@ export const style =
     },
 
     title: {
-      fontSize: 23,
+      fontSize: 25,
       fontWeight: "600",
 
       textAlign: "center",
@@ -77,7 +77,7 @@ export const style =
 
       alignItems: "center",
 
-      top: -175,
+      top: -120,
 
       marginBottom: 25,
     },
@@ -131,7 +131,7 @@ export const style =
 
       paddingHorizontal: 20,
 
-      top: -175,
+      top: -100,
 
       alignItems: "center",
     },
@@ -323,4 +323,9 @@ export const style =
 
       fontWeight: "700",
     },
+
+    titleTextCheckin:{
+      fontSize: 25,
+      
+    }
   });

@@ -12,8 +12,17 @@ import {
   ScrollView,
 } from "react-native";
 
-import { supabase } from "../../lib/supabase";
-import { style } from "./styles";
+import {
+  Ionicons,
+} from "@expo/vector-icons";
+
+import {
+  supabase,
+} from "../../lib/supabase";
+
+import {
+  style,
+} from "./styles";
 
 export default function PrimeiroAcesso() {
   const [
@@ -25,6 +34,16 @@ export default function PrimeiroAcesso() {
     confirmarSenha,
     setConfirmarSenha,
   ] = useState("");
+
+  const [
+    mostrarNovaSenha,
+    setMostrarNovaSenha,
+  ] = useState(false);
+
+  const [
+    mostrarConfirmarSenha,
+    setMostrarConfirmarSenha,
+  ] = useState(false);
 
   const [
     salvando,
@@ -184,11 +203,6 @@ export default function PrimeiroAcesso() {
       // ==========================================
       // 4. ATUALIZA A SESSÃO
       // ==========================================
-      //
-      // Isso faz o App.tsx consultar novamente
-      // o campo precisa_trocar_senha e liberar
-      // automaticamente a Home.
-      // ==========================================
 
       const {
         error:
@@ -209,6 +223,7 @@ export default function PrimeiroAcesso() {
         "Senha definida",
         "Sua nova senha foi salva com sucesso."
       );
+
     } catch (
       error
     ) {
@@ -221,6 +236,7 @@ export default function PrimeiroAcesso() {
         "Erro",
         "Não foi possível concluir o primeiro acesso."
       );
+
     } finally {
       setSalvando(false);
     }
@@ -235,21 +251,36 @@ export default function PrimeiroAcesso() {
         Platform.OS ===
         "ios"
           ? "padding"
-          : undefined
+          : "height"
+      }
+      keyboardVerticalOffset={
+        Platform.OS ===
+        "ios"
+          ? 20
+          : 0
       }
     >
       <ScrollView
         style={
           style.container
         }
-        contentContainerStyle={
-          style.contentContainer
-        }
+        contentContainerStyle={[
+          style.contentContainer,
+          {
+            paddingBottom: 160,
+          },
+        ]}
         keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="interactive"
         showsVerticalScrollIndicator={
           false
         }
       >
+
+        {/* ==================================
+            CABEÇALHO
+        ================================== */}
+
         <View
           style={
             style.header
@@ -272,11 +303,18 @@ export default function PrimeiroAcesso() {
           </Text>
         </View>
 
+        {/* ==================================
+            CARD
+        ================================== */}
+
         <View
           style={
             style.card
           }
         >
+
+          {/* INFORMAÇÃO */}
+
           <View
             style={
               style.infoBox
@@ -299,6 +337,10 @@ export default function PrimeiroAcesso() {
             </Text>
           </View>
 
+          {/* ==================================
+              NOVA SENHA
+          ================================== */}
+
           <Text
             style={
               style.label
@@ -307,27 +349,76 @@ export default function PrimeiroAcesso() {
             Nova senha
           </Text>
 
-          <TextInput
-            style={
-              style.input
-            }
-            value={
-              novaSenha
-            }
-            onChangeText={
-              setNovaSenha
-            }
-            placeholder="Digite sua nova senha"
-            placeholderTextColor="#999"
-            secureTextEntry
-            autoCapitalize="none"
-            autoCorrect={
-              false
-            }
-            editable={
-              !salvando
-            }
-          />
+          <View
+            style={[
+              style.input,
+              {
+                flexDirection:
+                  "row",
+
+                alignItems:
+                  "center",
+
+                paddingRight: 4,
+              },
+            ]}
+          >
+            <TextInput
+              style={{
+                flex: 1,
+                fontSize: 16,
+              }}
+              value={
+                novaSenha
+              }
+              onChangeText={
+                setNovaSenha
+              }
+              placeholder="Digite sua nova senha"
+              placeholderTextColor="#999"
+              secureTextEntry={
+                !mostrarNovaSenha
+              }
+              autoCapitalize="none"
+              autoCorrect={
+                false
+              }
+              editable={
+                !salvando
+              }
+            />
+
+            <TouchableOpacity
+              onPress={
+                () =>
+                  setMostrarNovaSenha(
+                    (
+                      valorAtual
+                    ) =>
+                      !valorAtual
+                  )
+              }
+              style={{
+                paddingHorizontal: 10,
+                paddingVertical: 8,
+              }}
+              disabled={
+                salvando
+              }
+            >
+              <Ionicons
+                name={
+                  mostrarNovaSenha
+                    ? "eye-outline"
+                    : "eye-off-outline"
+                }
+                size={
+                  22
+                }
+                color="#555"
+              />
+            </TouchableOpacity>
+          </View>
 
           <Text
             style={
@@ -337,6 +428,10 @@ export default function PrimeiroAcesso() {
             Utilize pelo menos 6 caracteres.
           </Text>
 
+          {/* ==================================
+              CONFIRMAR SENHA
+          ================================== */}
+
           <Text
             style={
               style.labelSpacing
@@ -345,30 +440,84 @@ export default function PrimeiroAcesso() {
             Confirmar nova senha
           </Text>
 
-          <TextInput
-            style={
-              style.input
-            }
-            value={
-              confirmarSenha
-            }
-            onChangeText={
-              setConfirmarSenha
-            }
-            placeholder="Digite novamente sua nova senha"
-            placeholderTextColor="#999"
-            secureTextEntry
-            autoCapitalize="none"
-            autoCorrect={
-              false
-            }
-            editable={
-              !salvando
-            }
-            onSubmitEditing={
-              definirNovaSenha
-            }
-          />
+          <View
+            style={[
+              style.input,
+              {
+                flexDirection:
+                  "row",
+
+                alignItems:
+                  "center",
+
+                paddingRight: 4,
+              },
+            ]}
+          >
+            <TextInput
+              style={{
+                flex: 1,
+                fontSize: 16,
+              }}
+              value={
+                confirmarSenha
+              }
+              onChangeText={
+                setConfirmarSenha
+              }
+              placeholder="Digite novamente sua nova senha"
+              placeholderTextColor="#999"
+              secureTextEntry={
+                !mostrarConfirmarSenha
+              }
+              autoCapitalize="none"
+              autoCorrect={
+                false
+              }
+              editable={
+                !salvando
+              }
+              returnKeyType="done"
+              onSubmitEditing={
+                definirNovaSenha
+              }
+            />
+
+            <TouchableOpacity
+              onPress={
+                () =>
+                  setMostrarConfirmarSenha(
+                    (
+                      valorAtual
+                    ) =>
+                      !valorAtual
+                  )
+              }
+              style={{
+                paddingHorizontal: 10,
+                paddingVertical: 8,
+              }}
+              disabled={
+                salvando
+              }
+            >
+              <Ionicons
+                name={
+                  mostrarConfirmarSenha
+                    ? "eye-outline"
+                    : "eye-off-outline"
+                }
+                size={
+                  22
+                }
+                color="#555"
+              />
+            </TouchableOpacity>
+          </View>
+
+          {/* ==================================
+              BOTÃO
+          ================================== */}
 
           <TouchableOpacity
             style={[
@@ -400,6 +549,7 @@ export default function PrimeiroAcesso() {
               </Text>
             )}
           </TouchableOpacity>
+
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

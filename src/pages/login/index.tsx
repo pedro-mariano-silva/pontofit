@@ -11,6 +11,9 @@ import {
   TouchableOpacity,
   Alert,
   ActivityIndicator,
+  KeyboardAvoidingView,
+  ScrollView,
+  Platform,
 } from "react-native";
 
 import {
@@ -205,248 +208,295 @@ export default function Login() {
   // ==========================================
 
   return (
-    <View
-      style={
-        style.container
+    <KeyboardAvoidingView
+      style={{
+        flex: 1,
+      }}
+      behavior={
+        Platform.OS === "ios"
+          ? "padding"
+          : "height"
       }
     >
-      <View
-        style={
-          style.boxTop
-        }
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+        }}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
       >
-        <Image
-          source={
-            Logo
-          }
-          style={
-            style.logo
-          }
-        />
-
-        <Text
-          style={
-            style.text
-          }
-        >
-          Login
-        </Text>
-      </View>
-
-      <View
-        style={
-          style.boxMid
-        }
-      >
-        {/* E-MAIL */}
-
-        <Text
-          style={
-            style.titleInput
-          }
-        >
-          E-MAIL
-        </Text>
-
         <View
           style={
-            style.boxInput
+            style.container
           }
         >
-          <TextInput
-            placeholder="Digite seu e-mail"
-            placeholderTextColor="#999"
-            value={
-              user
-            }
-            onChangeText={
-              setUser
-            }
-            keyboardType="email-address"
-            autoCapitalize="none"
-            autoCorrect={
-              false
-            }
-            editable={
-              !loading
-            }
-            style={{
-              flex: 1,
-              textAlignVertical:
-                "center",
-              fontSize: 16,
-            }}
-          />
-        </View>
 
-        {/* SENHA */}
+          {/* ==================================
+              TOPO
+          ================================== */}
 
-        <Text
-          style={
-            style.titleInput
-          }
-        >
-          SENHA
-        </Text>
-
-        <View
-          style={[
-            style.boxInput,
-            {
-              flexDirection:
-                "row",
-
-              alignItems:
-                "center",
-            },
-          ]}
-        >
-          <TextInput
-            placeholder="Digite sua senha"
-            placeholderTextColor="#999"
-            value={
-              password
-            }
-            onChangeText={
-              setPassword
-            }
-            secureTextEntry={
-              showPassword
-            }
-            autoCapitalize="none"
-            autoCorrect={
-              false
-            }
-            editable={
-              !loading
-            }
-            style={{
-              flex: 1,
-              textAlignVertical:
-                "center",
-              fontSize: 16,
-              paddingLeft: 10,
-            }}
-          />
-
-          <TouchableOpacity
-            onPress={
-              () =>
-                setShowPassword(
-                  (valorAtual) =>
-                    !valorAtual
-                )
-            }
-            style={{
-              paddingHorizontal: 10,
-            }}
-            disabled={
-              loading
-            }
-          >
-            <Ionicons
-              name={
-                showPassword
-                  ? "eye-off-outline"
-                  : "eye-outline"
-              }
-              size={
-                22
-              }
-              color="#555"
-            />
-          </TouchableOpacity>
-        </View>
-
-        {/* =====================================
-            LEMBRAR ACESSO
-        ===================================== */}
-
-        <TouchableOpacity
-          style={
-            style.rememberContainer
-          }
-          activeOpacity={
-            0.7
-          }
-          disabled={
-            loading
-          }
-          onPress={
-            () =>
-              setLembrarAcesso(
-                (valorAtual) =>
-                  !valorAtual
-              )
-          }
-        >
           <View
-            style={[
-              style.checkbox,
-
-              lembrarAcesso &&
-                style.checkboxChecked,
-            ]}
+            style={
+              style.boxTop
+            }
           >
-            {lembrarAcesso && (
-              <Ionicons
-                name="checkmark"
-                size={17}
-                color="#FFFFFF"
-              />
-            )}
+            <Image
+              source={
+                Logo
+              }
+              style={
+                style.logo
+              }
+            />
+
+            <Text
+              style={
+                style.text
+              }
+            >
+              Login
+            </Text>
           </View>
+
+          {/* ==================================
+              CAMPOS
+          ================================== */}
+
+          <View
+            style={
+              style.boxMid
+            }
+          >
+
+            {/* E-MAIL */}
+
+            <Text
+              style={
+                style.titleInput
+              }
+            >
+              E-MAIL
+            </Text>
+
+            <View
+              style={
+                style.boxInput
+              }
+            >
+              <TextInput
+                placeholder="Digite seu e-mail"
+                placeholderTextColor="#999"
+                value={
+                  user
+                }
+                onChangeText={
+                  setUser
+                }
+                keyboardType="email-address"
+                autoCapitalize="none"
+                autoCorrect={
+                  false
+                }
+                editable={
+                  !loading
+                }
+                style={{
+                  flex: 1,
+                  textAlignVertical:
+                    "center",
+                  fontSize: 16,
+                }}
+              />
+            </View>
+
+            {/* SENHA */}
+
+            <Text
+              style={
+                style.titleInput
+              }
+            >
+              SENHA
+            </Text>
+
+            <View
+              style={[
+                style.boxInput,
+                {
+                  flexDirection:
+                    "row",
+
+                  alignItems:
+                    "center",
+                },
+              ]}
+            >
+              <TextInput
+                placeholder="Digite sua senha"
+                placeholderTextColor="#999"
+                value={
+                  password
+                }
+                onChangeText={
+                  setPassword
+                }
+                secureTextEntry={
+                  showPassword
+                }
+                autoCapitalize="none"
+                autoCorrect={
+                  false
+                }
+                editable={
+                  !loading
+                }
+                style={{
+                  flex: 1,
+                  textAlignVertical:
+                    "center",
+                  fontSize: 16,
+                  paddingLeft: 10,
+                }}
+              />
+
+              {/* MOSTRAR / OCULTAR SENHA */}
+
+              <TouchableOpacity
+                onPress={
+                  () =>
+                    setShowPassword(
+                      (
+                        valorAtual
+                      ) =>
+                        !valorAtual
+                    )
+                }
+                style={{
+                  paddingHorizontal: 10,
+                }}
+                disabled={
+                  loading
+                }
+              >
+                <Ionicons
+                  name={
+                    showPassword
+                      ? "eye-off-outline"
+                      : "eye-outline"
+                  }
+                  size={
+                    22
+                  }
+                  color="#555"
+                />
+              </TouchableOpacity>
+            </View>
+
+            {/* =================================
+                LEMBRAR ACESSO
+            ================================= */}
+
+            <TouchableOpacity
+              style={
+                style.rememberContainer
+              }
+              activeOpacity={
+                0.7
+              }
+              disabled={
+                loading
+              }
+              onPress={
+                () =>
+                  setLembrarAcesso(
+                    (
+                      valorAtual
+                    ) =>
+                      !valorAtual
+                  )
+              }
+            >
+              <View
+                style={[
+                  style.checkbox,
+
+                  lembrarAcesso &&
+                    style.checkboxChecked,
+                ]}
+              >
+                {lembrarAcesso && (
+                  <Ionicons
+                    name="checkmark"
+                    size={17}
+                    color="#FFFFFF"
+                  />
+                )}
+              </View>
+
+              <Text
+                style={
+                  style.rememberText
+                }
+              >
+                Lembrar meu acesso
+              </Text>
+            </TouchableOpacity>
+
+          </View>
+
+          {/* ==================================
+              BOTÃO ENTRAR
+          ================================== */}
+
+          <View
+            style={
+              style.boxButton
+            }
+          >
+            <TouchableOpacity
+              style={
+                style.button
+              }
+              onPress={
+                getLogin
+              }
+              disabled={
+                loading
+              }
+              activeOpacity={
+                0.7
+              }
+            >
+              {loading ? (
+                <ActivityIndicator
+                  color="#FFFFFF"
+                />
+              ) : (
+                <Text
+                  style={
+                    style.buttonLogar
+                  }
+                >
+                  Entrar
+                </Text>
+              )}
+            </TouchableOpacity>
+          </View>
+
+          {/* ==================================
+              RODAPÉ
+          ================================== */}
 
           <Text
             style={
-              style.rememberText
+              style.textRodape
             }
           >
-            Lembrar meu acesso
+            PontoFit • DESENVOLVIDO POR PEDRO MARIANO
           </Text>
-        </TouchableOpacity>
-      </View>
 
-      {/* ENTRAR */}
-
-      <View
-        style={
-          style.boxButton
-        }
-      >
-        <TouchableOpacity
-          style={
-            style.button
-          }
-          onPress={
-            getLogin
-          }
-          disabled={
-            loading
-          }
-          activeOpacity={
-            0.7
-          }
-        >
-          {loading ? (
-            <ActivityIndicator
-              color="#FFFFFF"
-            />
-          ) : (
-            <Text
-              style={
-                style.buttonLogar
-              }
-            >
-              Entrar
-            </Text>
-          )}
-        </TouchableOpacity>
-      </View>
-
-      <Text style={style.textRodape}>
-        PontoFit • DESENVOLVIDO POR PEDRO MARIANO
-      </Text>
-    </View>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }

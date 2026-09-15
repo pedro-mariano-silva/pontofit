@@ -26,8 +26,8 @@ export const style= StyleSheet.create({
 
     topo:{
         top: -150,
-        width:395,
-        height:365,
+      width: 455,
+      height: 385,
     
     },
 
@@ -52,7 +52,8 @@ export const style= StyleSheet.create({
         borderRadius: 15,
         height: 27,
         width: 175,
-        left: 20,
+        left: 32,
+        top: 30
        
     },
     textButton:{
@@ -91,7 +92,7 @@ export const style= StyleSheet.create({
     textTiltePersonal:{
         fontSize: 26,
         lineHeight: 45,
-        left: 30       
+        left: 45       
         
     },
     containerText:{

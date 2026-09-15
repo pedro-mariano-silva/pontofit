@@ -353,12 +353,7 @@ export default function Checkin() {
           style.containerTitle
         }
       >
-        <Text
-          style={style.title}
-        >
-          DESEJA REALIZAR O
-          CHECK IN:
-        </Text>
+        
       </View>
 
       <View

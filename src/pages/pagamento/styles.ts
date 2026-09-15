@@ -22,14 +22,16 @@ export const style= StyleSheet.create({
     textCopiar:{
         alignItems: 'center',
         top: -140,
+        fontSize: 25,
+        fontWeight: 'bold'
     },  
 
  
 
     topo:{
-        top: -150,
-        width:395,
-        height:365,
+       top: -150,
+      width: 455,
+      height: 385,
     
     },
 
@@ -75,8 +77,8 @@ export const style= StyleSheet.create({
         borderRadius: 15,
         height: 27,
         width: 150,
-        left: 120,
-        top: -150,
+        left: 145,
+        top: -135,
         
 
     },
@@ -86,6 +88,7 @@ export const style= StyleSheet.create({
         alignItems: 'center',
         fontSize: 18,
         textAlign: 'center',
+        fontWeight: 'bold',
         
     },
 

@@ -234,6 +234,16 @@ export default function App() {
         data
       );
 
+      console.log(
+        "TIPO DO USUÁRIO:",
+        data.tipo
+      );
+
+      console.log(
+        "PRECISA TROCAR SENHA:",
+        data.precisa_trocar_senha
+      );
+
       setTipoUsuario(
         data.tipo as TipoUsuario
       );
@@ -478,7 +488,6 @@ export default function App() {
           alignItems:
             "center",
 
-          // Cor da nova identidade PontoFit
           backgroundColor:
             "#6C63FF",
         }}
@@ -542,6 +551,7 @@ export default function App() {
             false,
         }}
       >
+
         {/* ================================= */}
         {/* NÃO AUTENTICADO */}
         {/* ================================= */}
@@ -556,12 +566,23 @@ export default function App() {
         )}
 
         {/* ================================= */}
-        {/* ALUNO - PRIMEIRO ACESSO */}
+        {/* PRIMEIRO ACESSO */}
         {/* ================================= */}
+        {/*
+            IMPORTANTE:
+
+            Tanto ALUNO quanto PROFISSIONAL
+            precisam alterar a senha quando
+            precisa_trocar_senha = true.
+
+            O App controla automaticamente
+            essa tela.
+
+            Não usamos navigation.navigate()
+            no Login.
+        */}
 
         {session &&
-          tipoUsuario ===
-            "aluno" &&
           precisaTrocarSenha && (
             <Stack.Screen
               name="PrimeiroAcesso"
@@ -632,12 +653,13 @@ export default function App() {
           )}
 
         {/* ================================= */}
-        {/* PROFISSIONAL */}
+        {/* PROFISSIONAL - ACESSO NORMAL */}
         {/* ================================= */}
 
         {session &&
           tipoUsuario ===
-            "profissional" && (
+            "profissional" &&
+          !precisaTrocarSenha && (
             <>
               <Stack.Screen
                 name="HomeProfissional"
@@ -668,6 +690,7 @@ export default function App() {
               />
             </>
           )}
+
       </Stack.Navigator>
     </NavigationContainer>
   );

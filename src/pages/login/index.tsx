@@ -146,6 +146,10 @@ export default function Login() {
         true
       );
 
+      // ======================================
+      // 1. AUTENTICAÇÃO
+      // ======================================
+
       const {
         error,
       } =
@@ -171,7 +175,119 @@ export default function Login() {
       }
 
       // ======================================
-      // LEMBRAR ACESSO
+      // 2. IDENTIFICA USUÁRIO LOGADO
+      // ======================================
+
+      const {
+        data: {
+          user:
+            usuarioLogado,
+        },
+        error:
+          usuarioError,
+      } =
+        await supabase.auth.getUser();
+
+      if (
+        usuarioError ||
+        !usuarioLogado
+      ) {
+        console.log(
+          "Erro ao identificar usuário:",
+          usuarioError
+        );
+
+        Alert.alert(
+          "Erro",
+          "Não foi possível identificar o usuário."
+        );
+
+        return;
+      }
+
+      console.log(
+        "USUÁRIO LOGADO:",
+        usuarioLogado.id
+      );
+
+      // ======================================
+      // 3. BUSCA O PROFILE
+      // ======================================
+
+      const {
+        data: profile,
+        error:
+          profileError,
+      } =
+        await supabase
+          .from("profiles")
+          .select(
+            "tipo, precisa_trocar_senha"
+          )
+          .eq(
+            "id",
+            usuarioLogado.id
+          )
+          .single();
+
+      console.log(
+        "PROFILE:",
+        profile
+      );
+
+      console.log(
+        "ERRO PROFILE:",
+        profileError
+      );
+
+      if (
+        profileError ||
+        !profile
+      ) {
+        Alert.alert(
+          "Erro",
+          "Não foi possível carregar seu perfil."
+        );
+
+        return;
+      }
+
+      // ======================================
+      // 4. PRIMEIRO ACESSO DO PROFISSIONAL
+      // ======================================
+
+     if (
+  profile.tipo ===
+    "profissional" &&
+  profile.precisa_trocar_senha ===
+    true
+) {
+  console.log(
+    "PRIMEIRO ACESSO DO PROFISSIONAL"
+  );
+
+  if (
+    lembrarAcesso
+  ) {
+    await AsyncStorage.setItem(
+      CHAVE_EMAIL,
+      emailLimpo
+    );
+  } else {
+    await AsyncStorage.removeItem(
+      CHAVE_EMAIL
+    );
+  }
+
+  // O App.tsx detectará automaticamente
+  // que o profissional precisa trocar
+  // a senha e exibirá a tela PrimeiroAcesso.
+
+  return;
+}
+
+      // ======================================
+      // 5. LEMBRAR ACESSO
       // ======================================
 
       if (
@@ -186,6 +302,11 @@ export default function Login() {
           CHAVE_EMAIL
         );
       }
+
+      console.log(
+        "LOGIN REALIZADO COM SUCESSO"
+      );
+
     } catch (error) {
       console.log(
         "Erro inesperado:",
@@ -223,7 +344,9 @@ export default function Login() {
           flexGrow: 1,
         }}
         keyboardShouldPersistTaps="handled"
-        showsVerticalScrollIndicator={false}
+        showsVerticalScrollIndicator={
+          false
+        }
       >
         <View
           style={
@@ -427,7 +550,9 @@ export default function Login() {
                 {lembrarAcesso && (
                   <Ionicons
                     name="checkmark"
-                    size={17}
+                    size={
+                      17
+                    }
                     color="#FFFFFF"
                   />
                 )}

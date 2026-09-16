@@ -142,29 +142,31 @@ export default function Checkin() {
       // 3. GRAVA O CHECK-IN
       // ========================================
 
-      const {
-        data: checkin,
-        error: checkinError,
-      } = await supabase
-        .from("checkins")
-        .insert({
-          aluno_id:
-            aluno.id,
 
-          profissional_id:
-            aluno.profissional_id,
+const {
+  data: checkin,
+  error: checkinError,
+} = await supabase
+  .from("checkins")
+  .insert({
+    aluno_id: aluno.id,
 
-          tipo: tipo,
+    profissional_id:
+      aluno.profissional_id,
 
-          tipo_treino:
-            tipoTreinoSelecionado,
+    tipo: tipo,
 
-          status_reposicao:
-            "nenhuma",
-        })
-        .select()
-        .single();
+    tipo_treino:
+      tipoTreinoSelecionado,
 
+    origem_checkin:
+      "aluno",
+
+    status_reposicao:
+      "nenhuma",
+  })
+  .select()
+  .single();
       console.log(
         "CHECKIN:",
         checkin

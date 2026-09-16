@@ -1,3 +1,4 @@
+
 import React, {
   useEffect,
   useState,
@@ -204,6 +205,10 @@ export default function App() {
           )
           .single();
 
+      // ======================================
+      // ERRO AO BUSCAR PERFIL
+      // ======================================
+
       if (
         error
       ) {
@@ -212,11 +217,17 @@ export default function App() {
           error
         );
 
-        await supabase.auth.signOut();
-
-        setSession(
-          null
+        console.log(
+          "ID do usuário que falhou:",
+          userId
         );
+
+        // IMPORTANTE:
+        // Não fazemos signOut aqui.
+        //
+        // Se a consulta ao perfil falhar,
+        // não devemos destruir a sessão
+        // automaticamente.
 
         setTipoUsuario(
           null
@@ -228,6 +239,10 @@ export default function App() {
 
         return;
       }
+
+      // ======================================
+      // PERFIL ENCONTRADO
+      // ======================================
 
       console.log(
         "Perfil carregado:",
@@ -260,11 +275,16 @@ export default function App() {
         error
       );
 
-      await supabase.auth.signOut();
-
-      setSession(
-        null
+      console.log(
+        "ID do usuário:",
+        userId
       );
+
+      // Não fazemos signOut aqui.
+      //
+      // Mantemos a sessão e deixamos o
+      // aplicativo identificar o problema
+      // através dos logs.
 
       setTipoUsuario(
         null
@@ -305,6 +325,10 @@ export default function App() {
           return;
         }
 
+        // ====================================
+        // ERRO AO CARREGAR SESSÃO
+        // ====================================
+
         if (
           error
         ) {
@@ -327,6 +351,17 @@ export default function App() {
 
           return;
         }
+
+        // ====================================
+        // SESSÃO ENCONTRADA
+        // ====================================
+
+        console.log(
+          "Sessão inicial:",
+          sessaoAtual
+            ? "USUÁRIO AUTENTICADO"
+            : "NENHUMA SESSÃO"
+        );
 
         setSession(
           sessaoAtual
@@ -381,6 +416,10 @@ export default function App() {
       }
     }
 
+    // ========================================
+    // CARREGA SESSÃO
+    // ========================================
+
     carregarSessao();
 
     // ========================================
@@ -393,7 +432,7 @@ export default function App() {
       },
     } =
       supabase.auth.onAuthStateChange(
-        async (
+        (
           event,
           novaSession
         ) => {
@@ -408,29 +447,17 @@ export default function App() {
             return;
           }
 
-          setSession(
-            novaSession
-          );
+          // ==================================
+          // USUÁRIO DESLOGADO
+          // ==================================
 
           if (
-            novaSession?.user
+            !novaSession
           ) {
-            setLoading(
-              true
+            setSession(
+              null
             );
 
-            await carregarPerfilUsuario(
-              novaSession.user.id
-            );
-
-            if (
-              ativo
-            ) {
-              setLoading(
-                false
-              );
-            }
-          } else {
             setTipoUsuario(
               null
             );
@@ -442,7 +469,50 @@ export default function App() {
             setLoading(
               false
             );
+
+            return;
           }
+
+          // ==================================
+          // USUÁRIO AUTENTICADO
+          // ==================================
+
+          setSession(
+            novaSession
+          );
+
+          setLoading(
+            true
+          );
+
+          // IMPORTANTE:
+          // Não usamos "await" diretamente
+          // dentro do callback do
+          // onAuthStateChange.
+          //
+          // O carregamento do perfil acontece
+          // depois que o callback termina.
+
+          setTimeout(() => {
+            if (
+              !ativo
+            ) {
+              return;
+            }
+
+            carregarPerfilUsuario(
+              novaSession.user.id
+            )
+              .finally(() => {
+                if (
+                  ativo
+                ) {
+                  setLoading(
+                    false
+                  );
+                }
+              });
+          }, 0);
         }
       );
 
@@ -568,19 +638,6 @@ export default function App() {
         {/* ================================= */}
         {/* PRIMEIRO ACESSO */}
         {/* ================================= */}
-        {/*
-            IMPORTANTE:
-
-            Tanto ALUNO quanto PROFISSIONAL
-            precisam alterar a senha quando
-            precisa_trocar_senha = true.
-
-            O App controla automaticamente
-            essa tela.
-
-            Não usamos navigation.navigate()
-            no Login.
-        */}
 
         {session &&
           precisaTrocarSenha && (
@@ -590,9 +647,9 @@ export default function App() {
                 PrimeiroAcesso
               }
             />
-          )}
+        )}
 
-        {/* ================================= */}
+        
         {/* ALUNO - ACESSO NORMAL */}
         {/* ================================= */}
 
@@ -652,9 +709,9 @@ export default function App() {
             </>
           )}
 
-        {/* ================================= */}
-        {/* PROFISSIONAL - ACESSO NORMAL */}
-        {/* ================================= */}
+       
+        
+       
 
         {session &&
           tipoUsuario ===
@@ -695,3 +752,4 @@ export default function App() {
     </NavigationContainer>
   );
 }
+

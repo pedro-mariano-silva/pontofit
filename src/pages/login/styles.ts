@@ -47,20 +47,19 @@ export const style = StyleSheet.create({
     top: -45
   },
 
-  boxInput: {
-    top: -48,
-    width: "100%",
-    height: 48,
-    flexDirection: "row",
-    alignItems: "center",
-    borderWidth: 1,
-    borderRadius: 25,
-    paddingHorizontal: 15,
-    borderColor: "#68E58B",
-    marginBottom: 20,
-    fontWeight: "bold",
-    color:"#000000"
-  },
+boxInput: {
+  top: -48,
+  width: "100%",
+  height: 48,
+  flexDirection: "row",
+  alignItems: "center",
+  borderWidth: 1,
+  borderRadius: 25,
+  paddingHorizontal: 15,
+  borderColor: "#68E58B",
+  marginBottom: 20,
+  backgroundColor: "#FFFFFF",
+},
 
   // BOTÃO
   boxButton: {

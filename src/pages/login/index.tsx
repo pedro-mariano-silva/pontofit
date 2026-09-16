@@ -69,11 +69,13 @@ export default function Login() {
   ] =
     useState("");
 
+  // true = senha visível
+  // false = senha oculta
   const [
     showPassword,
     setShowPassword,
   ] =
-    useState(true);
+    useState(false);
 
   const [
     loading,
@@ -256,35 +258,35 @@ export default function Login() {
       // 4. PRIMEIRO ACESSO DO PROFISSIONAL
       // ======================================
 
-     if (
-  profile.tipo ===
-    "profissional" &&
-  profile.precisa_trocar_senha ===
-    true
-) {
-  console.log(
-    "PRIMEIRO ACESSO DO PROFISSIONAL"
-  );
+      if (
+        profile.tipo ===
+          "profissional" &&
+        profile.precisa_trocar_senha ===
+          true
+      ) {
+        console.log(
+          "PRIMEIRO ACESSO DO PROFISSIONAL"
+        );
 
-  if (
-    lembrarAcesso
-  ) {
-    await AsyncStorage.setItem(
-      CHAVE_EMAIL,
-      emailLimpo
-    );
-  } else {
-    await AsyncStorage.removeItem(
-      CHAVE_EMAIL
-    );
-  }
+        if (
+          lembrarAcesso
+        ) {
+          await AsyncStorage.setItem(
+            CHAVE_EMAIL,
+            emailLimpo
+          );
+        } else {
+          await AsyncStorage.removeItem(
+            CHAVE_EMAIL
+          );
+        }
 
-  // O App.tsx detectará automaticamente
-  // que o profissional precisa trocar
-  // a senha e exibirá a tela PrimeiroAcesso.
+        // O App.tsx detectará automaticamente
+        // que o profissional precisa trocar
+        // a senha e exibirá a tela PrimeiroAcesso.
 
-  return;
-}
+        return;
+      }
 
       // ======================================
       // 5. LEMBRAR ACESSO
@@ -408,7 +410,7 @@ export default function Login() {
             >
               <TextInput
                 placeholder="Digite seu e-mail"
-                placeholderTextColor="#999"
+                placeholderTextColor="#999999"
                 value={
                   user
                 }
@@ -423,11 +425,23 @@ export default function Login() {
                 editable={
                   !loading
                 }
+                selectionColor="#222222"
+                cursorColor="#222222"
+                underlineColorAndroid="transparent"
                 style={{
                   flex: 1,
+
                   textAlignVertical:
                     "center",
-                  fontSize: 16,
+
+                  fontSize:
+                    16,
+
+                  color:
+                    "#222222",
+
+                  backgroundColor:
+                    "transparent",
                 }}
               />
             </View>
@@ -451,68 +465,111 @@ export default function Login() {
 
                   alignItems:
                     "center",
+
+                  backgroundColor:
+                    "#FFFFFF",
                 },
               ]}
             >
+
               <TextInput
                 placeholder="Digite sua senha"
-                placeholderTextColor="#999"
+                placeholderTextColor="#999999"
                 value={
                   password
                 }
                 onChangeText={
                   setPassword
                 }
+
+                // false = oculta
+                // true = visível
                 secureTextEntry={
-                  showPassword
+                  !showPassword
                 }
+
                 autoCapitalize="none"
+
                 autoCorrect={
                   false
                 }
+
                 editable={
                   !loading
                 }
+
+                textContentType="password"
+
+                autoComplete="password"
+
+                selectionColor="#222222"
+
+                cursorColor="#222222"
+
+                underlineColorAndroid="transparent"
+
                 style={{
                   flex: 1,
+
                   textAlignVertical:
                     "center",
-                  fontSize: 16,
-                  paddingLeft: 10,
+
+                  fontSize:
+                    16,
+
+                  paddingLeft:
+                    10,
+
+                  paddingRight:
+                    5,
+
+                  color:
+                    "#222222",
+
+                  backgroundColor:
+                    "transparent",
+
+                  includeFontPadding:
+                    true,
                 }}
               />
 
               {/* MOSTRAR / OCULTAR SENHA */}
 
               <TouchableOpacity
-                onPress={
-                  () =>
-                    setShowPassword(
-                      (
-                        valorAtual
-                      ) =>
-                        !valorAtual
-                    )
+                onPress={() =>
+                  setShowPassword(
+                    valorAtual =>
+                      !valorAtual
+                  )
                 }
                 style={{
-                  paddingHorizontal: 10,
+                  paddingHorizontal:
+                    10,
+
+                  paddingVertical:
+                    8,
                 }}
                 disabled={
                   loading
+                }
+                activeOpacity={
+                  0.7
                 }
               >
                 <Ionicons
                   name={
                     showPassword
-                      ? "eye-off-outline"
-                      : "eye-outline"
+                      ? "eye-outline"
+                      : "eye-off-outline"
                   }
                   size={
                     22
                   }
-                  color="#555"
+                  color="#555555"
                 />
               </TouchableOpacity>
+
             </View>
 
             {/* =================================
@@ -529,14 +586,11 @@ export default function Login() {
               disabled={
                 loading
               }
-              onPress={
-                () =>
-                  setLembrarAcesso(
-                    (
-                      valorAtual
-                    ) =>
-                      !valorAtual
-                  )
+              onPress={() =>
+                setLembrarAcesso(
+                  valorAtual =>
+                    !valorAtual
+                )
               }
             >
               <View
@@ -617,7 +671,7 @@ export default function Login() {
               style.textRodape
             }
           >
-            PontoFit • DESENVOLVIDO POR PEDRO MARIANO
+            PontoFit • DESENVOLVIDO POR PEDRO MARIANOsss
           </Text>
 
         </View>
